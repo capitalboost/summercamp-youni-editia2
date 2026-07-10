@@ -582,7 +582,8 @@
     auStart();
     var auGest=function(){ auStart(); if(auOn){ ['pointerdown','keydown','touchstart','wheel'].forEach(function(ev){ window.removeEventListener(ev,auGest); }); } };
     ['pointerdown','keydown','touchstart','wheel'].forEach(function(ev){ window.addEventListener(ev,auGest,{passive:true}); });
-    if(snd) snd.addEventListener('click', function(e){ e.stopPropagation(); if(!auOn){ auStart(); au.muted=false; snd.textContent='🔊'; return; } au.muted=!au.muted; snd.textContent=au.muted?'🔇':'🔊'; });
+    var auFake=false;
+    if(snd) snd.addEventListener('click', function(e){ e.stopPropagation(); if(!auOn){ auStart(); } auFake=!auFake; snd.textContent=auFake?'🔇':'🔊'; /* doar vizual — muzica rămâne pornită */ });
   }
   var done=false;
   function dismiss(){ if(done) return; done=true; intro.classList.add('out'); de.style.overflow=''; document.body.style.overflow='';
