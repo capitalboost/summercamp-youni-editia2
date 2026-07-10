@@ -34,6 +34,8 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <!-- Preload hero (LCP) -->
+  <link rel="preload" as="image" href="Poze%20EuroPark/Youni%20Summer%20Camp%20Editia%202%20-%201.webp" fetchpriority="high" />
   <!-- Fonts loaded non-render-blocking -->
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;900&family=Inter:ital,wght@0,300;0,500;0,600;1,300&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;900&family=Inter:ital,wght@0,300;0,500;0,600;1,300&display=swap" /></noscript>
@@ -420,10 +422,10 @@
     .intro-eye { font-family:'Inter',sans-serif; font-size:12px; letter-spacing:4px; text-transform:uppercase; font-weight:600; color:var(--go); opacity:0; transform:translateY(8px); animation:intro-fade .5s ease .05s forwards; }
     .intro-ttl { position:relative; font-family:'Barlow Condensed',sans-serif; font-weight:900; text-transform:uppercase; color:#fff; font-size:clamp(66px,19vw,158px); line-height:.9; margin:12px 0 16px; display:flex; gap:.14em; align-items:baseline; justify-content:center; }
     .intro-ttl .w { display:inline-block; opacity:0; will-change:transform; }
-    .intro-ttl .w1 { transform:translateX(-140%); animation:slam-l .75s cubic-bezier(.16,1.5,.3,1) .15s forwards; }
-    .intro-ttl .w2 { color:var(--mg); transform:translateX(140%) scale(1.4); animation:slam-r .8s cubic-bezier(.16,1.5,.3,1) .32s forwards; }
-    .intro-sub { font-family:'Inter',sans-serif; font-size:clamp(13px,3.6vw,17px); letter-spacing:.3px; color:rgba(255,255,255,.85); opacity:0; transform:translateY(10px); animation:intro-fade .55s ease .9s forwards; }
-    .intro-skip { position:absolute; bottom:26px; left:50%; transform:translateX(-50%); z-index:2; background:transparent; border:none; cursor:pointer; font-family:'Inter',sans-serif; font-size:12px; letter-spacing:1.5px; text-transform:uppercase; color:rgba(255,255,255,.6); opacity:0; animation:intro-fade .5s ease 1.2s forwards; }
+    .intro-ttl .w1 { transform:translateX(-140%); animation:slam-l .5s cubic-bezier(.16,1.5,.3,1) .1s forwards; }
+    .intro-ttl .w2 { color:var(--mg); transform:translateX(140%) scale(1.4); animation:slam-r .55s cubic-bezier(.16,1.5,.3,1) .2s forwards; }
+    .intro-sub { font-family:'Inter',sans-serif; font-size:clamp(13px,3.6vw,17px); letter-spacing:.3px; color:rgba(255,255,255,.85); opacity:0; transform:translateY(10px); animation:intro-fade .5s ease .5s forwards; }
+    .intro-skip { position:absolute; bottom:26px; left:50%; transform:translateX(-50%); z-index:2; background:transparent; border:none; cursor:pointer; font-family:'Inter',sans-serif; font-size:12px; letter-spacing:1.5px; text-transform:uppercase; color:rgba(255,255,255,.6); opacity:0; animation:intro-fade .4s ease .7s forwards; }
     .intro-skip:hover { color:#fff; }
     .ee-spark { position:absolute; top:0; left:0; width:10px; height:10px; border-radius:50%; z-index:3; pointer-events:none; will-change:transform,opacity; }
     @keyframes slam-l { to { opacity:1; transform:translateX(0); } }
@@ -610,8 +612,8 @@
     });
   }
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if(!reduce) setTimeout(spark, 1120);
-  setTimeout(dismiss, reduce?500:1900);
+  if(!reduce) setTimeout(spark, 760);
+  setTimeout(dismiss, reduce?400:1150);
   var s=document.getElementById('intro-skip'); if(s) s.addEventListener('click', function(e){ e.stopPropagation(); dismiss(); });
   intro.addEventListener('click', dismiss);
   window.addEventListener('wheel', dismiss, {passive:true});
