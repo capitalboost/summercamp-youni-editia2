@@ -427,10 +427,6 @@
       .intro-ttl .w1,.intro-ttl .w2 { animation:none; opacity:1; transform:none; }
       .intro-eye,.intro-sub,.intro-skip { animation:none; opacity:1; transform:none; }
     }
-    /* Sound toggle (intro music) */
-    .snd { position:fixed; bottom:16px; right:16px; z-index:3500; width:42px; height:42px; border-radius:50%; border:1.5px solid rgba(255,255,255,.4); background:rgba(58,26,71,.72); backdrop-filter:blur(8px); color:#fff; font-size:18px; line-height:1; cursor:pointer; display:none; align-items:center; justify-content:center; transition:transform .2s, background .2s; box-shadow:0 4px 16px rgba(0,0,0,.28); }
-    .snd.show { display:flex; }
-    .snd:hover { transform:scale(1.1); background:rgba(58,26,71,.92); }
     .roi-list { display:flex; flex-direction:column; gap:22px; }
     .roi-item { display:flex; gap:14px; align-items:flex-start; }
     .roi-ico  { width:44px; height:44px; border-radius:12px; background:rgba(79,35,95,.08); display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0; }
@@ -564,8 +560,6 @@
   </div>
   <button class="intro-skip" id="intro-skip" type="button">Sari peste ↓</button>
 </div>
-<audio id="intro-au" src="media/maddix-acid-for-breakfast_LDwRmn6l.mp3" preload="auto" loop playsinline></audio>
-<button class="snd" id="snd" type="button" aria-label="Pornește / oprește sunetul">🔊</button>
 <noscript><style>#intro{display:none!important}</style></noscript>
 <script>
 (function(){
@@ -573,18 +567,6 @@
   var KEY='youni_ed2_intro';
   try{ if(sessionStorage.getItem(KEY)){ intro.parentNode.removeChild(intro); return; } sessionStorage.setItem(KEY,'1'); }catch(e){}
   var de=document.documentElement; de.style.overflow='hidden'; document.body.style.overflow='hidden';
-  /* ── Muzică intro (loop). Browserul poate bloca redarea până la prima interacțiune → fallback pe gest. ── */
-  var au=document.getElementById('intro-au'), snd=document.getElementById('snd'), auOn=false;
-  function auStart(){ if(auOn||!au) return; var pr=au.play(); if(pr&&pr.then){ pr.then(function(){ auOn=true; }).catch(function(){}); } else { auOn=true; } }
-  if(au){
-    au.volume=0.8;
-    if(snd) snd.classList.add('show');
-    auStart();
-    var auGest=function(){ auStart(); if(auOn){ ['pointerdown','keydown','touchstart','wheel'].forEach(function(ev){ window.removeEventListener(ev,auGest); }); } };
-    ['pointerdown','keydown','touchstart','wheel'].forEach(function(ev){ window.addEventListener(ev,auGest,{passive:true}); });
-    var auFake=false;
-    if(snd) snd.addEventListener('click', function(e){ e.stopPropagation(); if(!auOn){ auStart(); } auFake=!auFake; snd.textContent=auFake?'🔇':'🔊'; /* doar vizual — muzica rămâne pornită */ });
-  }
   var done=false;
   function dismiss(){ if(done) return; done=true; intro.classList.add('out'); de.style.overflow=''; document.body.style.overflow='';
     setTimeout(function(){ if(intro.parentNode) intro.parentNode.removeChild(intro); }, 620);
