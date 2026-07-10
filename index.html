@@ -400,22 +400,33 @@
     .ref-note .rd { font-size:13.5px; color:var(--tm); line-height:1.55; }
     .ref-note .rd b { color:var(--pu); }
 
-    /* INTRO overlay — kinetic reveal, once per session */
-    .intro { position:fixed; inset:0; z-index:3000; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:24px; background:radial-gradient(125% 125% at 50% 28%, #5a2a6b 0%, #4f235f 46%, #2b0d37 100%); transition:transform .7s cubic-bezier(.7,0,.2,1), opacity .55s ease; will-change:transform,opacity; }
+    /* INTRO overlay — kinetic "slam + spark" reveal, once per session */
+    .intro { position:fixed; inset:0; z-index:3000; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:24px; overflow:hidden; background:radial-gradient(125% 125% at 50% 28%, #5a2a6b 0%, #4f235f 46%, #2b0d37 100%); transition:transform .55s cubic-bezier(.7,0,.2,1), opacity .45s ease; will-change:transform,opacity; }
     .intro.out { transform:translateY(-100%); opacity:0; }
-    .intro-eye { font-family:'Inter',sans-serif; font-size:12px; letter-spacing:4px; text-transform:uppercase; font-weight:600; color:var(--go); opacity:0; transform:translateY(8px); animation:intro-fade .6s ease .15s forwards; }
-    .intro-ttl { font-family:'Barlow Condensed',sans-serif; font-weight:900; text-transform:uppercase; color:#fff; font-size:clamp(66px,19vw,158px); line-height:.9; margin:12px 0 16px; display:flex; gap:.16em; align-items:baseline; justify-content:center; }
-    .intro-ttl .w { display:inline-block; opacity:0; transform:translateY(42px); animation:intro-rise .85s cubic-bezier(.16,1,.3,1) forwards; }
-    .intro-ttl .w2 { color:var(--mg); animation-delay:.12s; }
-    .intro-sub { font-family:'Inter',sans-serif; font-size:clamp(13px,3.6vw,17px); letter-spacing:.3px; color:rgba(255,255,255,.85); opacity:0; transform:translateY(10px); animation:intro-fade .6s ease .52s forwards; }
-    .intro-skip { position:absolute; bottom:26px; left:50%; transform:translateX(-50%); background:transparent; border:none; cursor:pointer; font-family:'Inter',sans-serif; font-size:12px; letter-spacing:1.5px; text-transform:uppercase; color:rgba(255,255,255,.6); opacity:0; animation:intro-fade .6s ease 1s forwards; }
+    .intro-blob { position:absolute; border-radius:50%; filter:blur(60px); opacity:.5; pointer-events:none; will-change:transform; }
+    .intro-blob.b1 { width:46vmax; height:46vmax; left:-12vmax; top:-10vmax; background:radial-gradient(circle at 50% 50%, rgba(229,19,116,.55), transparent 68%); animation:blob1 6s ease-in-out infinite alternate; }
+    .intro-blob.b2 { width:40vmax; height:40vmax; right:-12vmax; bottom:-12vmax; background:radial-gradient(circle at 50% 50%, rgba(222,167,3,.4), transparent 68%); animation:blob2 7s ease-in-out infinite alternate; }
+    @keyframes blob1 { from { transform:translate(0,0) scale(1); } to { transform:translate(6vmax,4vmax) scale(1.12); } }
+    @keyframes blob2 { from { transform:translate(0,0) scale(1); } to { transform:translate(-5vmax,-4vmax) scale(1.1); } }
+    .intro-inner { position:relative; z-index:2; }
+    .intro-eye { font-family:'Inter',sans-serif; font-size:12px; letter-spacing:4px; text-transform:uppercase; font-weight:600; color:var(--go); opacity:0; transform:translateY(8px); animation:intro-fade .5s ease .05s forwards; }
+    .intro-ttl { position:relative; font-family:'Barlow Condensed',sans-serif; font-weight:900; text-transform:uppercase; color:#fff; font-size:clamp(66px,19vw,158px); line-height:.9; margin:12px 0 16px; display:flex; gap:.14em; align-items:baseline; justify-content:center; }
+    .intro-ttl .w { display:inline-block; opacity:0; will-change:transform; }
+    .intro-ttl .w1 { transform:translateX(-140%); animation:slam-l .75s cubic-bezier(.16,1.5,.3,1) .15s forwards; }
+    .intro-ttl .w2 { color:var(--mg); transform:translateX(140%) scale(1.4); animation:slam-r .8s cubic-bezier(.16,1.5,.3,1) .32s forwards; }
+    .intro-sub { font-family:'Inter',sans-serif; font-size:clamp(13px,3.6vw,17px); letter-spacing:.3px; color:rgba(255,255,255,.85); opacity:0; transform:translateY(10px); animation:intro-fade .55s ease .9s forwards; }
+    .intro-skip { position:absolute; bottom:26px; left:50%; transform:translateX(-50%); z-index:2; background:transparent; border:none; cursor:pointer; font-family:'Inter',sans-serif; font-size:12px; letter-spacing:1.5px; text-transform:uppercase; color:rgba(255,255,255,.6); opacity:0; animation:intro-fade .5s ease 1.2s forwards; }
     .intro-skip:hover { color:#fff; }
-    @keyframes intro-rise { to { opacity:1; transform:translateY(0); } }
+    .ee-spark { position:absolute; top:0; left:0; width:10px; height:10px; border-radius:50%; z-index:3; pointer-events:none; will-change:transform,opacity; }
+    @keyframes slam-l { to { opacity:1; transform:translateX(0); } }
+    @keyframes slam-r { to { opacity:1; transform:translateX(0) scale(1); } }
     @keyframes intro-fade { to { opacity:1; transform:translateY(0); } }
     @media (prefers-reduced-motion: reduce) {
       .intro { transition:opacity .3s ease; }
       .intro.out { transform:none; opacity:0; }
-      .intro-eye,.intro-ttl .w,.intro-sub,.intro-skip { animation:none; opacity:1; transform:none; }
+      .intro-blob { animation:none; }
+      .intro-ttl .w1,.intro-ttl .w2 { animation:none; opacity:1; transform:none; }
+      .intro-eye,.intro-sub,.intro-skip { animation:none; opacity:1; transform:none; }
     }
     .roi-list { display:flex; flex-direction:column; gap:22px; }
     .roi-item { display:flex; gap:14px; align-items:flex-start; }
@@ -547,9 +558,13 @@
 
 <!-- INTRO overlay -->
 <div class="intro" id="intro" role="presentation">
-  <div class="intro-eye">Youni · Summer Camp</div>
-  <div class="intro-ttl"><span class="w">Ediția</span><span class="w w2">2</span></div>
-  <div class="intro-sub">30 Aug – 6 Sep 2026 · Europark Fundata</div>
+  <div class="intro-blob b1"></div>
+  <div class="intro-blob b2"></div>
+  <div class="intro-inner">
+    <div class="intro-eye">Youni · Summer Camp</div>
+    <div class="intro-ttl"><span class="w w1">Ediția</span><span class="w w2" id="intro-2">2</span></div>
+    <div class="intro-sub">30 Aug – 6 Sep 2026 · Europark Fundata</div>
+  </div>
   <button class="intro-skip" id="intro-skip" type="button">Sari peste ↓</button>
 </div>
 <noscript><style>#intro{display:none!important}</style></noscript>
@@ -561,10 +576,23 @@
   var de=document.documentElement; de.style.overflow='hidden'; document.body.style.overflow='hidden';
   var done=false;
   function dismiss(){ if(done) return; done=true; intro.classList.add('out'); de.style.overflow=''; document.body.style.overflow='';
-    setTimeout(function(){ if(intro.parentNode) intro.parentNode.removeChild(intro); }, 750);
+    setTimeout(function(){ if(intro.parentNode) intro.parentNode.removeChild(intro); }, 620);
     window.removeEventListener('wheel',dismiss); window.removeEventListener('touchmove',dismiss); window.removeEventListener('keydown',dismiss); }
+  function spark(){
+    if(done) return;
+    var t2=document.getElementById('intro-2'); if(!t2) return;
+    var r=t2.getBoundingClientRect(), cx=r.left+r.width/2, cy=r.top+r.height/2, C=['#e51374','#dea703','#ffffff'];
+    for(var i=0;i<28;i++){
+      var p=document.createElement('div'); p.className='ee-spark';
+      p.style.background=C[i%3]; p.style.left=cx+'px'; p.style.top=cy+'px'; intro.appendChild(p);
+      var ang=Math.random()*Math.PI*2, vel=90+Math.random()*190, dx=Math.cos(ang)*vel, dy=Math.sin(ang)*vel, dur=600+Math.random()*520;
+      (function(el,dx,dy,dur){ var st=null; function step(ts){ if(st===null)st=ts; var t=(ts-st)/dur; if(t>=1){ el.remove(); return; }
+        el.style.transform='translate('+(dx*t)+'px,'+(dy*t+240*t*t)+'px) scale('+(1-t)+')'; el.style.opacity=String(1-t); requestAnimationFrame(step); } requestAnimationFrame(step); })(p,dx,dy,dur);
+    }
+  }
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  setTimeout(dismiss, reduce?500:1500);
+  if(!reduce) setTimeout(spark, 1120);
+  setTimeout(dismiss, reduce?500:1900);
   var s=document.getElementById('intro-skip'); if(s) s.addEventListener('click', function(e){ e.stopPropagation(); dismiss(); });
   intro.addEventListener('click', dismiss);
   window.addEventListener('wheel', dismiss, {passive:true});
