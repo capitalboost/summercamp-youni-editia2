@@ -31,12 +31,13 @@
 
   <!-- HubSpot Tracking (portal 9317962) -->
   <script type="text/javascript" id="hs-script-loader" async defer src="//js-eu1.hs-scripts.com/9317962.js"></script>
-  <!-- HubSpot Forms -->
-  <script charset="utf-8" type="text/javascript" src="//js-eu1.hsforms.net/forms/embed/v2.js"></script>
+  <!-- HubSpot Forms embed script is loaded lazily on first modal open (see initForm) -->
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;900&family=Inter:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet" />
+  <!-- Fonts loaded non-render-blocking -->
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;900&family=Inter:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;900&family=Inter:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" /></noscript>
 
   <style>
     /* ─── RESET ─── */
@@ -610,7 +611,7 @@
     </div>
     <div class="hero-visual">
       <div class="hero-img-wrap">
-        <img src="Poze%20EuroPark/resort_europark_fundata_brasov_exterior.jpg" alt="Resort Europark Fundata — vedere aeriană cu terenuri de sport în mijlocul naturii" loading="eager" />
+        <img src="Poze%20EuroPark/resort_europark_fundata_brasov_exterior.jpg" alt="Resort Europark Fundata — vedere aeriană cu terenuri de sport în mijlocul naturii" loading="eager" fetchpriority="high" decoding="async" />
       </div>
       <div class="badge badge-go">
         <span class="n">Ediția 2</span>
@@ -1002,11 +1003,20 @@
 (function(){
   'use strict';
 
-  /* HubSpot form — ediția 2 (form dedicat) */
-  var loaded = false;
+  /* HubSpot form — ediția 2 (form dedicat, script încărcat lazy la deschidere) */
+  var loaded = false, hsRequested = false;
   function initForm(){
     if(loaded) return;
-    if(!window.hbspt){ setTimeout(initForm,300); return; }
+    if(!window.hbspt){
+      if(!hsRequested){
+        hsRequested = true;
+        var hs = document.createElement('script');
+        hs.src = 'https://js-eu1.hsforms.net/forms/embed/v2.js';
+        hs.async = true;
+        document.head.appendChild(hs);
+      }
+      setTimeout(initForm, 200); return;
+    }
     loaded = true;
     window.hbspt.forms.create({ portalId:'9317962', formId:'c6bd8479-1e51-4e90-a3b7-a92034753b08', region:'eu1', target:'#hs-form-target' });
   }
