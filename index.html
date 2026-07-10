@@ -361,6 +361,14 @@
     .ph-item { border-radius:var(--rs); overflow:hidden; }
     .ph-item img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .4s ease; }
     .ph-item:hover img { transform:scale(1.04); }
+    /* Lightbox (click pe imagine → versiune full-res) */
+    img.zoom { cursor:zoom-in; }
+    .lb { position:fixed; inset:0; z-index:4000; background:rgba(15,6,20,.94); backdrop-filter:blur(6px); display:flex; align-items:center; justify-content:center; padding:20px; opacity:0; pointer-events:none; transition:opacity .25s ease; }
+    .lb.open { opacity:1; pointer-events:auto; }
+    .lb img { max-width:96vw; max-height:92vh; border-radius:12px; box-shadow:0 20px 70px rgba(0,0,0,.6); transform:scale(.96); transition:transform .28s cubic-bezier(.34,1.56,.64,1); }
+    .lb.open img { transform:scale(1); }
+    .lb-x { position:absolute; top:18px; right:20px; width:44px; height:44px; border-radius:50%; background:rgba(255,255,255,.14); border:1.5px solid rgba(255,255,255,.4); color:#fff; font-size:20px; cursor:pointer; display:flex; align-items:center; justify-content:center; }
+    .lb-x:hover { background:rgba(255,255,255,.26); }
     .ph-wide { grid-column:span 2; }
     @media(max-width:700px){
       .ph-grid { grid-template-columns:1fr 1fr; grid-template-rows:auto; }
@@ -650,7 +658,7 @@
     </div>
     <div class="hero-visual">
       <div class="hero-img-wrap">
-        <img src="Poze%20EuroPark/resort_europark_fundata_brasov_exterior.jpg" alt="Resort Europark Fundata — vedere aeriană cu terenuri de sport în mijlocul naturii" loading="eager" fetchpriority="high" decoding="async" />
+        <img class="zoom" src="Poze%20EuroPark/Youni%20Summer%20Camp%20Editia%202%20-%201.webp" data-full="Poze%20EuroPark/Youni%20Summer%20Camp%20Editia%202%20-%201.jpg" alt="Resort Europark Fundata — vedere aeriană cu terenuri de sport în mijlocul naturii" loading="eager" fetchpriority="high" decoding="async" />
       </div>
       <div class="badge badge-go">
         <span class="n">Ediția 2</span>
@@ -900,11 +908,11 @@
       <span class="loc-chip">🌄 Natură și aer curat</span>
     </div>
     <div class="ph-grid ai">
-      <div class="ph-item ph-wide"><img src="Poze%20EuroPark/resort_europark_fundata_brasov_exterior_6.jpg" alt="Europark Fundata — exterior resort" loading="lazy" /></div>
-      <div class="ph-item"><img src="Poze%20EuroPark/resort_europark_fundata_brasov_piscina.jpg" alt="Piscină interioară Europark Fundata" loading="lazy" /></div>
-      <div class="ph-item"><img src="Poze%20EuroPark/resort_europark_fundata_brasov_sauna.jpg" alt="Saună Europark Fundata" loading="lazy" /></div>
-      <div class="ph-item"><img src="Poze%20EuroPark/resort_europark_fundata_brasov_camere.jpg" alt="Cameră de cazare Europark Fundata" loading="lazy" /></div>
-      <div class="ph-item"><img src="Poze%20EuroPark/resort_europark_fundata_brasov_baza_sportiva_2.jpg" alt="Bază sportivă Europark Fundata" loading="lazy" /></div>
+      <div class="ph-item ph-wide"><img class="zoom" src="Poze%20EuroPark/Youni%20Summer%20Camp%20Editia%202%20-%202.webp" data-full="Poze%20EuroPark/Youni%20Summer%20Camp%20Editia%202%20-%202.jpg" alt="Europark Fundata — exterior resort" loading="lazy" /></div>
+      <div class="ph-item"><img class="zoom" src="Poze%20EuroPark/Youni%20Summer%20Camp%20Editia%202%20-%203.webp" data-full="Poze%20EuroPark/Youni%20Summer%20Camp%20Editia%202%20-%203.jpg" alt="Piscină interioară Europark Fundata" loading="lazy" /></div>
+      <div class="ph-item"><img class="zoom" src="Poze%20EuroPark/Youni%20Summer%20Camp%20Editia%202%20-%204.webp" data-full="Poze%20EuroPark/Youni%20Summer%20Camp%20Editia%202%20-%204.jpg" alt="Saună Europark Fundata" loading="lazy" /></div>
+      <div class="ph-item"><img class="zoom" src="Poze%20EuroPark/Youni%20Summer%20Camp%20Editia%202%20-%205.webp" data-full="Poze%20EuroPark/Youni%20Summer%20Camp%20Editia%202%20-%205.jpg" alt="Cameră de cazare Europark Fundata" loading="lazy" /></div>
+      <div class="ph-item"><img class="zoom" src="Poze%20EuroPark/Youni%20Summer%20Camp%20Editia%202%20-%206.webp" data-full="Poze%20EuroPark/Youni%20Summer%20Camp%20Editia%202%20-%206.jpg" alt="Bază sportivă Europark Fundata" loading="lazy" /></div>
     </div>
   </div>
 </section>
@@ -1216,6 +1224,24 @@
   },{ threshold:0.15 });
   roiItems.forEach(function(el){ roiObserver.observe(el); });
 
+})();
+</script>
+
+<!-- LIGHTBOX -->
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Imagine mărită">
+  <button class="lb-x" id="lb-x" type="button" aria-label="Închide">✕</button>
+  <img id="lb-img" alt="" />
+</div>
+<script>
+(function(){
+  var lb=document.getElementById('lb'), img=document.getElementById('lb-img');
+  if(!lb||!img) return;
+  function openLb(src){ img.src=src; lb.classList.add('open'); document.body.style.overflow='hidden'; }
+  function closeLb(){ lb.classList.remove('open'); document.body.style.overflow=''; setTimeout(function(){ img.removeAttribute('src'); },260); }
+  document.querySelectorAll('img.zoom').forEach(function(el){ el.addEventListener('click', function(){ openLb(this.getAttribute('data-full')||this.src); }); });
+  document.getElementById('lb-x').addEventListener('click', closeLb);
+  lb.addEventListener('click', function(e){ if(e.target===lb) closeLb(); });
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape' && lb.classList.contains('open')) closeLb(); });
 })();
 </script>
 </body>
