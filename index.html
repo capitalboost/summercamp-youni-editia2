@@ -391,6 +391,13 @@
     .p-warn::before { content:'⚠'; color:var(--or); font-weight:700; flex-shrink:0; }
     .p-cta  { margin-top:24px; }
     .p-sub  { font-size:13px; color:rgba(255,255,255,.45); text-align:center; margin-top:9px; }
+
+    /* Referral attribution note */
+    .ref-note { display:flex; gap:13px; align-items:flex-start; background:rgba(228,0,114,.06); border:1px solid rgba(228,0,114,.14); border-left:4px solid var(--go); border-radius:var(--rs); padding:15px 17px; }
+    .ref-note .ri { font-size:21px; line-height:1.1; flex-shrink:0; }
+    .ref-note .rt { font-family:'Barlow Condensed',sans-serif; font-weight:700; text-transform:uppercase; font-size:15px; color:var(--pu); letter-spacing:.3px; margin-bottom:3px; }
+    .ref-note .rd { font-size:13.5px; color:var(--tm); line-height:1.55; }
+    .ref-note .rd b { color:var(--pu); }
     .roi-list { display:flex; flex-direction:column; gap:22px; }
     .roi-item { display:flex; gap:14px; align-items:flex-start; }
     .roi-ico  { width:44px; height:44px; border-radius:12px; background:rgba(79,35,95,.08); display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0; }
@@ -855,6 +862,13 @@
         </div>
       </div>
     </div>
+    <div class="ref-note" style="margin-top:28px;">
+      <div class="ri">📣</div>
+      <div>
+        <div class="rt">Te-a recomandat cineva?</div>
+        <div class="rd">Dacă un participant Youni ți-a spus de tabără, treci <b>numele lui complet</b> la întrebarea „Cum ai ajuns la noi?" din formular. Așa recomandarea contează.</div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -927,6 +941,13 @@
     <h2 class="modal-ttl dc">Înscrie-te la ediția 2</h2>
     <p class="modal-sub">Completează formularul. Un coleg Youni te contactează în maxim 24h cu detaliile înscrierii.</p>
     <div class="modal-hr"></div>
+    <div class="ref-note" style="margin-bottom:22px;">
+      <div class="ri">📣</div>
+      <div>
+        <div class="rt">Te-a recomandat cineva?</div>
+        <div class="rd">Treci <b>numele complet</b> al persoanei care te-a recomandat la câmpul „Cum ai ajuns la noi?" de mai jos — ca recomandarea să fie validă.</div>
+      </div>
+    </div>
     <div id="hs-form-target"></div>
   </div>
 </div>
