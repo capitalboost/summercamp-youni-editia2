@@ -513,6 +513,47 @@
     #hs-form-target .hs-form .hs-error-msgs li { font-size:12px!important; color:#c0005f!important; }
     #hs-form-target .hs-form .submitted-message { text-align:center; padding:28px 0; color:var(--pu); font-weight:500; font-size:16px; line-height:1.7; }
 
+    /* ─── formular pe pași — activ doar dacă JS reușește (.fsteps-on) ───
+       Câmpurile NU se mută; se ascund pe loc. Vizibil = doar pasul curent. */
+    .fprog { margin-bottom:18px; }
+    /* doar bara roz — fără "Pasul X din 6" și fără titlu */
+    .fprog-top { display:none; }
+    .fprog-step { font-size:11px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:var(--mg); }
+    .fprog-ttl  { font-size:13px; font-weight:500; color:var(--tm); }
+    .fprog-bar  { height:4px; border-radius:4px; background:rgba(79,35,95,.1); overflow:hidden; }
+    .fprog-fill { height:100%; background:var(--mg); border-radius:4px; width:0; transition:width .3s ease; }
+    .fstep-hint { font-size:12px; color:var(--tl); margin:2px 0 14px; line-height:1.5; }
+    /* ascunde blocurile de text-instrucțiune fără câmp (I./II./III./IV.) + textul GDPR */
+    #hs-form-target .hs-form.fsteps-on fieldset[data-fstep-hide],
+    #hs-form-target .hs-form.fsteps-on .hs-richtext[data-fstep-hide] { display:none!important; }
+    /* ascunde toate câmpurile + rich-text taguite; afișează doar pasul activ */
+    #hs-form-target .hs-form.fsteps-on .hs-form-field[data-fstep],
+    #hs-form-target .hs-form.fsteps-on .hs-richtext[data-fstep] { display:none!important; }
+    #hs-form-target .hs-form.fsteps-on[data-fstep-on="0"] .hs-form-field[data-fstep="0"],
+    #hs-form-target .hs-form.fsteps-on[data-fstep-on="0"] .hs-richtext[data-fstep="0"],
+    #hs-form-target .hs-form.fsteps-on[data-fstep-on="1"] .hs-form-field[data-fstep="1"],
+    #hs-form-target .hs-form.fsteps-on[data-fstep-on="1"] .hs-richtext[data-fstep="1"],
+    #hs-form-target .hs-form.fsteps-on[data-fstep-on="2"] .hs-form-field[data-fstep="2"],
+    #hs-form-target .hs-form.fsteps-on[data-fstep-on="2"] .hs-richtext[data-fstep="2"],
+    #hs-form-target .hs-form.fsteps-on[data-fstep-on="3"] .hs-form-field[data-fstep="3"],
+    #hs-form-target .hs-form.fsteps-on[data-fstep-on="3"] .hs-richtext[data-fstep="3"],
+    #hs-form-target .hs-form.fsteps-on[data-fstep-on="4"] .hs-form-field[data-fstep="4"],
+    #hs-form-target .hs-form.fsteps-on[data-fstep-on="4"] .hs-richtext[data-fstep="4"],
+    #hs-form-target .hs-form.fsteps-on[data-fstep-on="5"] .hs-form-field[data-fstep="5"],
+    #hs-form-target .hs-form.fsteps-on[data-fstep-on="5"] .hs-richtext[data-fstep="5"] { display:block!important; animation:fstepIn .28s ease both; }
+    @keyframes fstepIn { from { opacity:0; transform:translateX(10px); } to { opacity:1; transform:none; } }
+    .fnav { display:flex; gap:10px; margin-top:6px; }
+    .fnav-b { flex:0 0 auto; background:none; border:1.5px solid rgba(79,35,95,.2); color:var(--pu); padding:14px 20px; border-radius:50px; font-family:'Inter',sans-serif; font-weight:600; font-size:15px; cursor:pointer; transition:border-color .2s,background .2s; }
+    .fnav-b:hover { border-color:var(--pu); background:rgba(79,35,95,.04); }
+    .fnav-n { flex:1 1 auto; background:var(--mg); border:none; color:#fff; padding:14px 24px; border-radius:50px; font-family:'Inter',sans-serif; font-weight:600; font-size:16px; cursor:pointer; transition:background .2s; }
+    .fnav-n:hover { background:var(--mg-d); }
+    .fstep-err { font-size:12px; color:#c0005f; margin:8px 0 0; display:none; }
+    .fstep-err.on { display:block; }
+    /* câmpul semnalat ca gol la validarea pasului */
+    #hs-form-target .hs-form .fbad input,
+    #hs-form-target .hs-form .fbad select,
+    #hs-form-target .hs-form .fbad textarea { border-color:#c0005f!important; }
+
     /* ─── scroll fade ─── */
     .ai { opacity:0; transform:translateY(24px); transition:opacity .6s ease, transform .6s ease; }
     .ai.vis { opacity:1; transform:translateY(0); }
@@ -1055,7 +1096,7 @@
 (function(){
   'use strict';
 
-  /* HubSpot form — ediția 2 (form dedicat, script încărcat lazy la deschidere) */
+  /* HubSpot form — ediția 2 (script încărcat lazy la deschidere) */
   var loaded = false, hsRequested = false;
   function initForm(){
     if(loaded) return;
@@ -1070,7 +1111,215 @@
       setTimeout(initForm, 200); return;
     }
     loaded = true;
-    window.hbspt.forms.create({ portalId:'9317962', formId:'c6bd8479-1e51-4e90-a3b7-a92034753b08', region:'eu1', target:'#hs-form-target' });
+    window.hbspt.forms.create({
+      portalId:'9317962', formId:'c6bd8479-1e51-4e90-a3b7-a92034753b08',
+      region:'eu1', target:'#hs-form-target',
+      /* css:'' → HubSpot randează inline, nu în iframe. OBLIGATORIU:
+         fără asta câmpurile stau cross-origin (pașii n-ar funcționa)
+         și CSS-ul de mai sus nu se aplică deloc. */
+      css:'',
+      onFormReady: function(el){
+        /* el poate fi jQuery (v2) sau nod — normalizăm la <form> */
+        var node = (el && el.jquery) ? el[0] : el;
+        var form = (node && node.tagName === 'FORM') ? node
+                 : (node && node.querySelector ? node.querySelector('form') : null)
+                 || document.querySelector('#hs-form-target form');
+        if(form) stepify(form);
+      }
+    });
+  }
+
+  /* ── Formular pe pași ──────────────────────────────────────────────
+     Grupăm câmpurile HubSpot pe pași DUPĂ NUME, dar NU le mutăm din DOM —
+     doar le ascundem/afișăm pe loc (data-fstep + CSS). HubSpot randează
+     în iframe by default; cu css:'' randează inline, iar codul lui de
+     post-submit se bazează pe structura DOM proprie. Dacă mutăm câmpurile
+     în alte containere, acel cod crapă la submit ("Script error." din
+     iframe-ul lui). Ascunderea pe loc păstrează structura intactă.
+     Regulă fermă: dacă ceva nu iese, formularul rămâne întreg, ca înainte. */
+  var STEPS = [
+    { t:'Cine ești',          hint:'', f:['cine_completeaza_'] },
+    { t:'Date de contact',    hint:'Aici te căutăm cu detaliile înscrierii.', f:['firstname','lastname','email','phone'] },
+    { t:'Despre tine',        hint:'', f:['grade','varsta','profil_liceu_ro','highschool','state_ro'] },
+    { t:'Ce te interesează',  hint:'Aproape tot e opțional — completează ce vrei.', f:['domain_of_choice__future_study_path_','scorsat_anterior','materieslaba_sat','ce_iti_doresti_cel_mai_mult_sa_obtii_din_tabara'] },
+    { t:'Date părinte',       hint:'', f:['parent_name','parent_email','parent_phone_number_new'] },
+    { t:'Logistică & final',  hint:'Ultimul pas.', f:['transport_din_bucuresti','restrictii_alimentare','medical'] }
+  ];
+
+  function fieldName(wrap){
+    /* phone randează un input auxiliar cu name="" înaintea celui real —
+       luăm primul name NEGOL */
+    var els = wrap.querySelectorAll('[name]');
+    for(var i=0;i<els.length;i++){
+      var n = els[i].getAttribute('name');
+      if(n && n.trim() !== '') return n;
+    }
+    return null;
+  }
+  function isRequired(wrap){
+    return !!wrap.querySelector('label .hs-form-required') ||
+           !!wrap.querySelector('[required]');
+  }
+  function isFilled(wrap){
+    var boxes = wrap.querySelectorAll('input[type="checkbox"],input[type="radio"]');
+    if(boxes.length){
+      for(var i=0;i<boxes.length;i++){ if(boxes[i].checked) return true; }
+      return false;
+    }
+    var els = wrap.querySelectorAll('input,select,textarea');
+    for(var j=0;j<els.length;j++){
+      var e = els[j];
+      if(e.type === 'hidden') continue;
+      if((e.value||'').trim() !== '') return true;
+    }
+    return false;
+  }
+
+  function stepify(form){
+    try{
+      var wraps = [].slice.call(form.querySelectorAll('.hs-form-field'));
+      if(wraps.length < 4) return;                 /* prea puține câmpuri — n-are rost */
+
+      /* nume câmp → indexul pasului din STEPS */
+      var stepOf = {}, lastStep = STEPS.length - 1;
+      STEPS.forEach(function(s, i){ s.f.forEach(function(n){ stepOf[n] = i; }); });
+
+      /* taguim fiecare wrapper pe loc; necunoscutele merg în ultimul pas */
+      var used = {};
+      wraps.forEach(function(w){
+        var n = fieldName(w);
+        var si = (n != null && stepOf[n] != null) ? stepOf[n] : lastStep;
+        w.setAttribute('data-fstep', si);
+        used[si] = (used[si] || 0) + 1;
+      });
+
+      /* HubSpot pune blocuri de text-instrucțiune ("I. Elevul", "II.
+         Parintele"...) în fieldset-uri fără câmp — s-ar scurge pe toți
+         pașii. Le marcăm ca să le ascundem (titlurile pașilor le înlocuiesc). */
+      [].slice.call(form.querySelectorAll('fieldset')).forEach(function(fs){
+        if(!fs.querySelector('.hs-form-field')) fs.setAttribute('data-fstep-hide', '1');
+      });
+
+      /* Blocuri rich-text lipite de un câmp — le legăm de pasul câmpului
+         vecin din același fieldset, altfel apar pe toți pașii.
+         Excepție: textul lung GDPR de lângă bifele de consimțământ e
+         ascuns complet (rămân doar bifele "Sunt de acord…"). */
+      [].slice.call(form.querySelectorAll('.hs-richtext')).forEach(function(rt){
+        if(rt.closest('.hs-form-field')) return;              /* deja în interiorul unui câmp */
+        if(rt.closest('fieldset[data-fstep-hide]')) return;   /* deja ascuns */
+        var fs = rt.closest('fieldset');
+        var isConsent = rt.closest('.legal-consent-container') ||
+                        (fs && fs.querySelector('[name^="LEGAL_CONSENT"]'));
+        if(isConsent){ rt.setAttribute('data-fstep-hide', '1'); return; }
+        var fld = fs && fs.querySelector('.hs-form-field[data-fstep]');
+        if(fld) rt.setAttribute('data-fstep', fld.getAttribute('data-fstep'));
+      });
+
+      /* lista pașilor care chiar au câmpuri (unii pot fi goi) */
+      var live = [];
+      STEPS.forEach(function(s, i){ if(used[i]) live.push({ i:i, t:s.t, hint:s.hint }); });
+      if(live.length < 2) return;                  /* nu s-a putut împărți — lăsăm cum e */
+
+      var submitWrap = form.querySelector('.hs_submit') || form.querySelector('.hs-submit');
+      if(!submitWrap) return;                      /* fără submit n-avem ce livra */
+
+      /* progres, injectat la începutul formularului (nu mutăm câmpuri) */
+      var prog = document.createElement('div');
+      prog.className = 'fprog';
+      prog.innerHTML = '<div class="fprog-top"><span class="fprog-step"></span><span class="fprog-ttl"></span></div>' +
+                       '<div class="fprog-bar"><div class="fprog-fill"></div></div>' +
+                       '<p class="fstep-hint" data-fhint style="display:none"></p>';
+      form.insertBefore(prog, form.firstChild);
+      var pStep = prog.querySelector('.fprog-step'),
+          pTtl  = prog.querySelector('.fprog-ttl'),
+          pFill = prog.querySelector('.fprog-fill'),
+          pHint = prog.querySelector('[data-fhint]');
+
+      /* eroare de pas + nav, plasate chiar înaintea butonului de submit
+         (rămân în form, nu atingem câmpurile HubSpot) */
+      var err = document.createElement('p');
+      err.className = 'fstep-err';
+      var nav = document.createElement('div');
+      nav.className = 'fnav';
+      var bBack = document.createElement('button');
+      bBack.type = 'button'; bBack.className = 'fnav-b'; bBack.textContent = '← Înapoi';
+      var bNext = document.createElement('button');
+      bNext.type = 'button'; bNext.className = 'fnav-n'; bNext.textContent = 'Înainte →';
+      nav.appendChild(bBack); nav.appendChild(bNext);
+      submitWrap.parentNode.insertBefore(err, submitWrap);
+      submitWrap.parentNode.insertBefore(nav, submitWrap);
+
+      form.classList.add('fsteps-on');
+      var atIdx = 0;                               /* poziția în `live` */
+
+      function applyVisible(stepI){
+        /* CSS: .fsteps-on .hs-form-field[data-fstep] ascuns implicit;
+           marcăm pasul curent vizibil printr-un atribut pe form */
+        form.setAttribute('data-fstep-on', stepI);
+      }
+
+      function show(k){
+        atIdx = Math.max(0, Math.min(k, live.length - 1));
+        var stepI = live[atIdx].i;
+        applyVisible(stepI);
+        pStep.textContent = 'Pasul ' + (atIdx+1) + ' din ' + live.length;
+        pTtl.textContent  = live[atIdx].t;
+        pFill.style.width = Math.round(((atIdx+1)/live.length)*100) + '%';
+        if(live[atIdx].hint){ pHint.textContent = live[atIdx].hint; pHint.style.display=''; }
+        else { pHint.style.display='none'; }
+        bBack.style.visibility = atIdx === 0 ? 'hidden' : 'visible';
+        var last = atIdx === live.length - 1;
+        bNext.style.display      = last ? 'none' : '';
+        submitWrap.style.display = last ? '' : 'none';
+        err.classList.remove('on');
+        var first = form.querySelector('.hs-form-field[data-fstep="'+stepI+'"] input:not([type=hidden]):not([type=checkbox]):not([type=radio]),.hs-form-field[data-fstep="'+stepI+'"] select,.hs-form-field[data-fstep="'+stepI+'"] textarea');
+        if(first && atIdx > 0){ try{ first.focus({preventScroll:true}); }catch(e){ first.focus(); } }
+        prog.scrollIntoView({ block:'nearest' });
+      }
+
+      function currentWraps(){
+        return [].slice.call(form.querySelectorAll('.hs-form-field[data-fstep="'+live[atIdx].i+'"]'));
+      }
+
+      function validate(){
+        var bad = [];
+        currentWraps().forEach(function(w){
+          w.classList.remove('fbad');
+          if(isRequired(w) && !isFilled(w)){ w.classList.add('fbad'); bad.push(w); }
+        });
+        if(bad.length){
+          err.textContent = bad.length === 1 ? 'Mai e un câmp obligatoriu de completat.'
+                                             : 'Mai sunt ' + bad.length + ' câmpuri obligatorii de completat.';
+          err.classList.add('on');
+          var f = bad[0].querySelector('input:not([type=hidden]),select,textarea');
+          if(f) f.focus();
+          return false;
+        }
+        err.classList.remove('on');
+        return true;
+      }
+
+      bNext.addEventListener('click', function(){ if(validate()) show(atIdx + 1); });
+      bBack.addEventListener('click', function(){ err.classList.remove('on'); show(atIdx - 1); });
+
+      /* plasa de siguranță: dacă HubSpot respinge un câmp de pe un pas
+         ascuns, sari la primul pas care are eroare — altfel submit „mort".
+         NU mutăm noduri; doar comutăm pasul vizibil. */
+      form.addEventListener('submit', function(){
+        setTimeout(function(){
+          for(var k=0;k<live.length;k++){
+            var w = form.querySelector('.hs-form-field[data-fstep="'+live[k].i+'"] .hs-error-msgs li');
+            if(w && w.textContent.trim()){ show(k); break; }
+          }
+        }, 80);
+      });
+
+      show(0);
+    } catch(e){
+      /* orice a crăpat — formularul rămâne întreg, ca înainte */
+      form.classList.remove('fsteps-on');
+      form.removeAttribute('data-fstep-on');
+    }
   }
 
   /* Modal */
