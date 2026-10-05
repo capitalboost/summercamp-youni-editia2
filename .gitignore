@@ -1,0 +1,21 @@
+# Source master videos at repo root (sute de MB) — never commit.
+# Videoul web-comprimat din media/ ESTE inclus (necesar pe pagina live).
+/*.mp4
+*.mov
+*.avi
+*.mkv
+*.webm
+
+# Notă internă — nu intră pe site-ul public
+caption long tabara.txt
+
+# OS / editor junk
+.DS_Store
+Thumbs.db
+desktop.ini
+*~
+.vscode/
+.idea/
+
+# Planning docs local-only
+.planning/
