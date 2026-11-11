@@ -133,14 +133,20 @@ document.querySelectorAll('[data-photo]').forEach(frame=>{
 <div id="hs-form-target" style="min-height:160px;"></div>
 </div></div>
 <style>
+#hs-form-target .hs-form,#hs-form-target .hs-form *{color:#2e2e2e!important}
 #hs-form-target .hs-form fieldset{max-width:100%!important}
 #hs-form-target .hs-form .input{margin-right:0!important}
 #hs-form-target .hs-form input[type=text],#hs-form-target .hs-form input[type=email],#hs-form-target .hs-form input[type=tel],#hs-form-target .hs-form input[type=number],#hs-form-target .hs-form select,#hs-form-target .hs-form textarea{width:100%!important;padding:12px 14px!important;border:1.5px solid rgba(79,35,95,.2)!important;border-radius:9px!important;font-size:15px!important;font-family:'Barlow',Arial,sans-serif!important;box-sizing:border-box!important;background:#fff!important}
 #hs-form-target .hs-form input:focus,#hs-form-target .hs-form select:focus,#hs-form-target .hs-form textarea:focus{border-color:#e40072!important;outline:none!important}
+#hs-form-target .hs-form input::placeholder,#hs-form-target .hs-form textarea::placeholder{color:#9a8ba6!important}
 #hs-form-target .hs-form label{font-size:13.5px!important;font-weight:600!important;color:#2e2e2e!important;margin-bottom:5px!important;display:block!important}
-#hs-form-target .hs-form .hs-button{background:#e40072!important;color:#fff!important;border:none!important;border-radius:9px!important;font-family:'Barlow Condensed',Arial,sans-serif!important;font-weight:800!important;text-transform:uppercase!important;letter-spacing:.5px!important;font-size:17px!important;padding:14px 28px!important;width:100%!important;cursor:pointer!important;margin-top:8px!important}
+#hs-form-target .hs-form .hs-field-desc{color:#6a5a76!important;font-size:12.5px!important;font-weight:400!important}
+#hs-form-target .hs-form .hs-richtext,#hs-form-target .hs-form .hs-richtext *,#hs-form-target .hs-form legend{color:#4f235f!important;font-weight:400!important}
+#hs-form-target .hs-form .hs-form-required{color:#e40072!important}
+#hs-form-target .hs-form .legal-consent-container,#hs-form-target .hs-form .legal-consent-container *{color:#6a5a76!important;font-size:12px!important}
+#hs-form-target .hs-form .hs-button,#hs-form-target .hs-form .hs-button *{background:#e40072!important;color:#fff!important;border:none!important;border-radius:9px!important;font-family:'Barlow Condensed',Arial,sans-serif!important;font-weight:800!important;text-transform:uppercase!important;letter-spacing:.5px!important;font-size:17px!important;padding:14px 28px!important;width:100%!important;cursor:pointer!important;margin-top:8px!important}
 #hs-form-target .hs-form .hs-button:hover{background:#bf005f!important}
-#hs-form-target .hs-error-msg,#hs-form-target .hs-error-msgs label{color:#e40072!important;font-size:12.5px!important}
+#hs-form-target .hs-form .hs-error-msg,#hs-form-target .hs-form .hs-error-msgs label{color:#e40072!important;font-size:12.5px!important}
 #hs-form-target .hs-form-field{margin-bottom:12px!important}
 </style>
 <script src="//js-eu1.hsforms.net/forms/embed/v2.js"></script>
